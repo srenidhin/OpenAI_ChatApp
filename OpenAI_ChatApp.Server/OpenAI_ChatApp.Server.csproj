@@ -7,6 +7,7 @@
     <SpaRoot>..\openai_chatapp.client</SpaRoot>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:5173</SpaProxyServerUrl>
+    <UserSecretsId>86de6bad-b16c-4e9b-8a9d-764c21ab167e</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

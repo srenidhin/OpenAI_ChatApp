@@ -1,9 +1,13 @@
-import * as React from "react";
+import React from "react";
 import "./Main.css";
 import { assets } from "../../assets/assets";
+import { Context } from "../../context/Context";
 
 
 function Main() {
+
+    const { onSent, recentPrompt, showResult, loading, resultData, setInput, input } = React.useContext(Context)
+
   return (
       <div className="main">
           <div className="nav">
@@ -11,34 +15,56 @@ function Main() {
               <img src={assets.user_icon} alt="" />
           </div>
           <div className="main-container">
-            <div className="greet">
-                  <p><span>Hello Friend.</span></p>
-                  <p>How can I help you today?</p>
-              </div>
-              <div className="cards">
-                <div className="card">
-                  <p>Show me the best treks in the world!</p>
-                  <img src={assets.compass_icon} alt="" />
-                </div>
-                <div className="card">
-                  <p>Suggest few business ideas</p>
-                  <img src={assets.bulb_icon} alt="" />
-                </div>
-                <div className="card">
-                  <p>Help me frame an professional email with a polite tone</p>
-                  <img src={assets.message_icon} alt="" />
-                </div>
-                <div className="card">
-                  <p>Create boiler plate code stateful widget in flutter</p>
-                  <img src={assets.code_icon} alt="" />
-                </div>
-              </div>
+              {
+                  !showResult ? <div>
+                      <div className="greet">
+                          <p><span>Hello Friend.</span></p>
+                          <p>How can I help you today?</p>
+                      </div>
+                      <div className="cards">
+                          <div className="card">
+                              <p>Show me the best treks in the world!</p>
+                              <img src={assets.compass_icon} alt="" />
+                          </div>
+                          <div className="card">
+                              <p>Suggest few business ideas</p>
+                              <img src={assets.bulb_icon} alt="" />
+                          </div>
+                          <div className="card">
+                              <p>Help me frame an professional email with a polite tone</p>
+                              <img src={assets.message_icon} alt="" />
+                          </div>
+                          <div className="card">
+                              <p>Create boiler plate code stateful widget in flutter</p>
+                              <img src={assets.code_icon} alt="" />
+                          </div>
+                      </div>
+                  </div> :
+                      <div className="result">
+                          <div className="result-title">
+                              <img src={assets.user_icon} alt="" ></img>
+                              <p>{recentPrompt}</p>
+                          </div>
+                          <div className="result-data">
+                              <img src={assets.gemini_icon} alt=""></img>
+                              {
+                                  loading ? <div className="loader">
+                                      <hr />
+                                      <hr />
+                                      <hr />
+                                  </div> : <p dangerouslySetInnerHTML={{ __html: resultData }}></p>
+                              }
+                              
+                           </div>
+                  </div>
+              }
+            
               <div className="main-bottom">
                 <div className="search-box">
-                    <input type="text" placeholder="Ask me Anything..." />
+                    <input onChange={(e) => setInput(e.target.value)} value={input} type="text" placeholder="Ask me Anything..." />
                     <div>
                         <img src={assets.gallery_icon} alt="" />
-                        <img src={assets.send_icon} alt="" />
+                          {input ? <img onClick={(e) => onSent()} src={assets.send_icon} alt="" /> : null}
                     </div>
                 </div>
                 <div>
