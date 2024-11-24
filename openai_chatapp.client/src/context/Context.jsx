@@ -8,10 +8,12 @@ const ContextProvider = (props) => {
 
     const [input, setInput] = React.useState("");
     const [recentPrompt, setRecentPrompt] = React.useState("");
-    const [prevPrompt, setPrevPrompts] = React.useState([]);
+    const [prevPrompts, setPrevPrompts] = React.useState([]);
     const [showResult, setShowResult] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
     const [resultData, setResultData] = React.useState("");
+    const [chatHistory, setChatHistory] = React.useState([]);
+
 
     const delayPara = (index, nextWord) => {
         setTimeout(function () {
@@ -20,6 +22,7 @@ const ContextProvider = (props) => {
     }
 
     const newChat = () => {
+        setChatHistory(prev => []);
         setLoading(false);
         setShowResult(false);
     }
@@ -28,14 +31,18 @@ const ContextProvider = (props) => {
 
         setLoading(true)
         setShowResult(true)
+        setResultData("")
+        setChatHistory()
         let response = "";
         if (prompt !== undefined) {
-            response = await runChat(prompt);
-            setRecentPrompt(prompt);
+            setChatHistory([]);
+            response = await runChat(chatHistory,prompt);
+            
         } else {
-            setPrevPrompts(prev => [...prev, input]);
-            setRecentPrompt(input);
-            response = await runChat(input);
+            if (chatHistory.length === 0) {
+                setPrevPrompts(prev => [...prev, input]);
+            }
+            response = await runChat(chatHistory,input);
         }
         let responseArray = response.split("**");
         let newResponse = "";
@@ -49,6 +56,7 @@ const ContextProvider = (props) => {
         }
         newResponse = newResponse.split("*").join("<br />");
         let newResponseArray = newResponse.split(" ");
+        (prompt !== undefined) ? setRecentPrompt(prompt) : setRecentPrompt(input);
         for (let i = 0; i < newResponseArray.length; i++) {
             const nextWord = newResponseArray[i];
             delayPara(i, nextWord + " ");
@@ -59,7 +67,7 @@ const ContextProvider = (props) => {
     }
 
     const contextValue = {
-        prevPrompt,
+        prevPrompts,
         setPrevPrompts,
         onSent,
         setRecentPrompt,
@@ -69,7 +77,8 @@ const ContextProvider = (props) => {
         resultData,
         input,
         setInput,
-        newChat
+        newChat,
+        chatHistory
     }
 
     return (

@@ -6,7 +6,7 @@ import { Context } from "../../context/Context";
 
 function Main() {
 
-    const { onSent, recentPrompt, showResult, loading, resultData, setInput, input } = React.useContext(Context)
+    const { onSent, recentPrompt, showResult, loading, resultData, setInput, input, chatHistory } = React.useContext(Context)
 
   return (
       <div className="main">
@@ -41,6 +41,16 @@ function Main() {
                       </div>
                   </div> :
                       <div className="result">
+                          {
+                              chatHistory.slice(0, -2).map((item, index) => {
+                                  return (
+                                      <div className={(item.role == "user") ? "result-title" : "result-data"}>
+                                          <img src={(item.role == "user") ? assets.user_icon : assets.gemini_icon} alt="" />
+                                          <p>{ item.parts[0].text }</p>
+                                      </div>
+                                  )
+                              })
+                          }
                           <div className="result-title">
                               <img src={assets.user_icon} alt="" ></img>
                               <p>{recentPrompt}</p>
@@ -54,8 +64,7 @@ function Main() {
                                       <hr />
                                   </div> : <p dangerouslySetInnerHTML={{ __html: resultData }}></p>
                               }
-                              
-                           </div>
+                          </div>
                   </div>
               }
             
