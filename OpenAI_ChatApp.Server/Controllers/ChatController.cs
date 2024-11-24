@@ -5,12 +5,13 @@ namespace OpenAI_ChatApp.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ChatGPTController : ControllerBase
+    public class ChatController : ControllerBase
     {
-        private ChatGPTEngine chatGPTEngine;
+        private ChatEngine chatGPTEngine;
+        private ChatEngine2 chatGPTEngine2;
 
-        public ChatGPTController(IOptions<OpenAI> openAI) { 
-            chatGPTEngine = new ChatGPTEngine(openAI.Value);
+        public ChatController(IOptions<OpenAI> openAI) { 
+            chatGPTEngine = new ChatEngine(openAI.Value);
         }
 
         [HttpPost(Name = "talkWithHTTP")]

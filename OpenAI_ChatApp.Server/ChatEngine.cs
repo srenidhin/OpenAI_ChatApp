@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace OpenAI_ChatApp.Server
 {
-    public class ChatGPTEngine
+    public class ChatEngine
     {
         private readonly OpenAI _openAI;
         private HttpClient _httpClient {  get; set; }
         
-        public ChatGPTEngine(OpenAI openAI)
+        public ChatEngine(OpenAI openAI)
         {
             _openAI = openAI;
 
