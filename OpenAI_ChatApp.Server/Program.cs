@@ -1,3 +1,6 @@
+using Azure.Identity;
+using System.Diagnostics;
+
 
 namespace OpenAI_ChatApp.Server
 {
@@ -13,7 +16,12 @@ namespace OpenAI_ChatApp.Server
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.Configure<OpenAI>(builder.Configuration.GetSection("OpenAI"));
+            if (!Debugger.IsAttached)
+            {
+                builder.Configuration.AddAzureKeyVault(new System.Uri("KeyVault Endpoint goes here"), new DefaultAzureCredential()); //When hosted in App Service, uses Managed Identity to maximize security
+            }
+
+            builder.Services.AddSingleton<OpenAI>(); //Inject using DI
 
             var app = builder.Build();
 
