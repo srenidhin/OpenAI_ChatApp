@@ -11,6 +11,7 @@
             OpenAi_Endpoint = config["OpenAI:OpenAi_Endpoint"];
             OpenAi_Model = config["OpenAI:OpenAi_Model"];
             OpenAi_Key = config["OpenAIKey"]; // Will be in User secrets for dev env. Will be in keyvault for Prod
+            logger.LogInformation("Credentials configured");
         }
     }
 }

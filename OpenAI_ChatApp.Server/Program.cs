@@ -1,5 +1,6 @@
 using Azure.Identity;
 using System.Diagnostics;
+using Serilog;
 
 
 namespace OpenAI_ChatApp.Server
@@ -8,9 +9,15 @@ namespace OpenAI_ChatApp.Server
     {
         public static void Main(string[] args)
         {
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.WithEnvironmentName()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Services.AddSerilog();
 
             builder.Services.AddControllers();
             
@@ -43,6 +50,8 @@ namespace OpenAI_ChatApp.Server
             app.MapControllers();
 
             app.MapFallbackToFile("/index.html");
+
+            app.UseMiddleware<LoggingMiddleware>();
 
             app.Run();
         }

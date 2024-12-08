@@ -9,9 +9,11 @@ namespace OpenAI_ChatApp.Server.Controllers
     {
         private ChatEngine chatGPTEngine;
         private ChatEngine2 chatGPTEngine2;
+        private readonly ILogger<ChatController> _logger;
 
-        public ChatController(OpenAI openAI)
+        public ChatController(OpenAI openAI, ILogger<ChatController> logger)
         { 
+            _logger = logger;
             chatGPTEngine = new ChatEngine(openAI);
         }
 
