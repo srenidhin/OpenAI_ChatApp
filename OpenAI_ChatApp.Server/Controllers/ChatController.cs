@@ -10,8 +10,9 @@ namespace OpenAI_ChatApp.Server.Controllers
         private ChatEngine chatGPTEngine;
         private ChatEngine2 chatGPTEngine2;
 
-        public ChatController(IOptions<OpenAI> openAI) { 
-            chatGPTEngine = new ChatEngine(openAI.Value);
+        public ChatController(OpenAI openAI)
+        { 
+            chatGPTEngine = new ChatEngine(openAI);
         }
 
         [HttpPost(Name = "talkWithHTTP")]
